@@ -1,0 +1,130 @@
+# --- ОС ---
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+
+# --- Rider / IntelliJ ---
+.idea/
+.idea_modules/
+*.iml
+
+# --- VSCode ---
+.vscode/
+.history/
+*.code-workspace
+
+# --- Visual Studio ---
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build results
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Visual Studio profiler
+*.psess
+*.vsp
+*.vspx
+*.sap
+
+# Visual Studio cache
+*.dbmdl
+*.bak
+*.bak2
+*.backup
+*.BLOB
+*.tmp
+*.temp
+
+# NUnit / xUnit
+TestResult.xml
+TestResults/
+
+# --- Entity Framework ---
+Migrations/obj/
+*.db
+*.mdf
+*.ldf
+*.ndf
+_app_data/
+
+# --- Package managers ---
+# NuGet
+*.nupkg
+# Paket
+.paket/
+paket-files/
+# Node (если фронт в проекте)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# --- Publish / deploy ---
+publish/
+*.Publish.xml
+*.pubxml
+*.publishproj
+*.tmp_proj
+
+# --- Resharper ---
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# --- Rider caches ---
+.idea/
+.idea/*
+*.sln.iml
+
+# --- JetBrains Rider ---
+*.sln.iml
+.idea/
+.idea_modules/
+*.ipr
+out/
+
+# --- VS coverage / analyzers ---
+*.coverage
+*.coveragexml
+*.testsettings
+*.vsmdi
+*.pdb
+
+# --- Logs ---
+*.log
+*.tlog
+*.svclog
+
+# --- Others ---
+# User secrets (ASP.NET)
+secrets.json
+secrets/
+
+# Tye / Dapr / Containers
+.tye/
+dapr-components/
+dapr-placement.log
+dapr-logs/
+docker-compose.override.yml
+.docker/
+
+# --- Rider dotnet tools cache ---
+*.DotSettings
+*.DotSettings.user
+
