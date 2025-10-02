@@ -1,0 +1,103 @@
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports: ["5672:5672", "15672:15672"]
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    healthcheck:
+      test: [ "CMD-SHELL", "rabbitmq-diagnostics -q ping && echo > /dev/tcp/localhost/5672" ]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 30s
+      
+  main-db:
+    image: postgres:16
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: main
+    ports: [ "5433:5432" ]
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      retries: 5
+      start_period: 10s
+  
+  name-db:
+    image: postgres:16
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: name
+    ports: [ "5433:5432" ]
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      retries: 5
+      start_period: 10s
+
+  surname-db:
+    image: postgres:16
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: surname
+    ports: [ "5434:5432" ]
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      retries: 5
+      start_period: 10s
+  
+  main:
+    image: ./main
+    environment:
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+      - ConnectionStrings__postgres=Host=main-db;Port=5432;Database=main;Username=postgres;Password=postgres
+      - JWT__Key=${JWT_KEY}
+      - JWT__Issuer=${JWT_ISSUER}
+      - JWT__Audience=${JWT_Audience}
+      - RABBITMQ__HOST=rabbitmq
+      - RABBITMQ__USER=${RABBITMQ_USER}
+      - RABBITMQ__PASS=${RABBITMQ_PASS}
+    ports: ["5001:8080"]
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      main-db:
+        condition: service_healthy
+      
+  name:
+    image: ./name
+    environment:
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+      - ConnectionStrings__postgres=Host=name-db;Port=5432;Database=name;Username=postgres;Password=postgres
+      - JWT__Key=${JWT_KEY}
+      - JWT__Issuer=${JWT_ISSUER}
+      - JWT__Audience=${JWT_Audience}
+      - RABBITMQ__HOST=rabbitmq
+      - RABBITMQ__USER=${RABBITMQ_USER}
+      - RABBITMQ__PASS=${RABBITMQ_PASS}
+    ports: ["5002:8080"]
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      name-db:
+        condition: service_healthy
+        
+  surname:
+    image: ./surname
+    environment:
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+      - ConnectionStrings__postgres=Host=surname-db;Port=5432;Database=surname;Username=postgres;Password=postgres
+      - JWT__Key=${JWT_KEY}
+      - JWT__Issuer=${JWT_ISSUER}
+      - JWT__Audience=${JWT_Audience}
+      - RABBITMQ__HOST=rabbitmq
+      - RABBITMQ__USER=${RABBITMQ_USER}
+      - RABBITMQ__PASS=${RABBITMQ_PASS}
+    ports: [ "5003:8080" ]
+    depends_on:
+      rabbitmq:
+        condition: service_healthy 
+      surname-db:
+        condition: service_healthy
