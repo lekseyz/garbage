@@ -1,0 +1,3 @@
+curl -X POST "http://localhost:5001/users?name=Roman&surname=Baran"
+
+docker compose logs -f 

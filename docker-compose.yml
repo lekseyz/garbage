@@ -1,12 +1,12 @@
 services:
   rabbitmq:
     image: rabbitmq:3-management
-    ports: ["5672:5672", "15672:15672"]
+    ports: ["${RABBITMQ_PORT}:5672", "15672:15672"]
     environment:
-      - RABBITMQ_DEFAULT_USER=guest
-      - RABBITMQ_DEFAULT_PASS=guest
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASS}
     healthcheck:
-      test: [ "CMD-SHELL", "rabbitmq-diagnostics -q ping" ]
+      test: [ "CMD-SHELL", "rabbitmq-diagnostics -q ping && bash -lc '</dev/tcp/127.0.0.1/5672'" ]
       interval: 10s
       timeout: 5s
       retries: 6
@@ -56,9 +56,10 @@ services:
       - JWT__Key=${JWT_KEY}
       - JWT__Issuer=${JWT_ISSUER}
       - JWT__Audience=${JWT_Audience}
-      - RABBITMQ__HOST=rabbitmq
-      - RABBITMQ__USER=${RABBITMQ_USER}
-      - RABBITMQ__PASS=${RABBITMQ_PASS}
+      - RabbitMQOptions__Host=rabbitmq
+      - RabbitMQOptions__Port=${RABBITMQ_PORT}
+      - RabbitMQOptions__Username=${RABBITMQ_USER}
+      - RabbitMQOptions__Password=${RABBITMQ_PASS}
     ports: ["5001:8080"]
     depends_on:
       rabbitmq:
@@ -74,9 +75,10 @@ services:
       - JWT__Key=${JWT_KEY}
       - JWT__Issuer=${JWT_ISSUER}
       - JWT__Audience=${JWT_Audience}
-      - RABBITMQ__HOST=rabbitmq
-      - RABBITMQ__USER=${RABBITMQ_USER}
-      - RABBITMQ__PASS=${RABBITMQ_PASS}
+      - RabbitMQOptions__Host=rabbitmq
+      - RabbitMQOptions__Port=${RABBITMQ_PORT}
+      - RabbitMQOptions__Username=${RABBITMQ_USER}
+      - RabbitMQOptions__Password=${RABBITMQ_PASS}
     ports: ["5002:8080"]
     depends_on:
       rabbitmq:
@@ -92,9 +94,10 @@ services:
       - JWT__Key=${JWT_KEY}
       - JWT__Issuer=${JWT_ISSUER}
       - JWT__Audience=${JWT_Audience}
-      - RABBITMQ__HOST=rabbitmq
-      - RABBITMQ__USER=${RABBITMQ_USER}
-      - RABBITMQ__PASS=${RABBITMQ_PASS}
+      - RabbitMQOptions__Host=rabbitmq
+      - RabbitMQOptions__Port=${RABBITMQ_PORT}
+      - RabbitMQOptions__Username=${RABBITMQ_USER}
+      - RabbitMQOptions__Password=${RABBITMQ_PASS}
     ports: [ "5003:8080" ]
     depends_on:
       rabbitmq:
