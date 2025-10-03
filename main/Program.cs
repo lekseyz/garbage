@@ -1,10 +1,10 @@
 using main.DTOs;
 using main.Extensions;
 using main.Logic;
-using RabbitMQ.Client;
 
 var builder = WebApplication.CreateBuilder(args);
-await builder.Services.AddRabbitMQ(builder.Configuration);
+
+await builder.Services.AddRabbitMq(builder);
 builder.Services.AddScoped<UserService>();
 
 var app = builder.Build();
