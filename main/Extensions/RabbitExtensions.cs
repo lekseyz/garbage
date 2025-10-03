@@ -7,10 +7,8 @@ public static class RabbitExtensions
 {
     public static async Task AddRabbitMq(this IServiceCollection services, WebApplicationBuilder builder)
     {
-        services.Configure<RabbitMQOptions>(builder.Configuration.GetSection("RabbitMQOptions"));
-
-        await using var serviceProvider = services.BuildServiceProvider();
-        var configuration = serviceProvider.GetRequiredService<RabbitMQOptions>();
+        var configuration =  builder.Configuration.GetSection("RabbitMQOptions").Get<RabbitMQOptions>();
+        
         var factory = new ConnectionFactory
         {
             HostName = configuration.Host,
@@ -20,6 +18,6 @@ public static class RabbitExtensions
         };
         var connection = await factory.CreateConnectionAsync();
         
-        services.AddSingleton<IConnection>(connection);
+        services.AddSingleton<IConnection>(_ => connection);
     }
 }
